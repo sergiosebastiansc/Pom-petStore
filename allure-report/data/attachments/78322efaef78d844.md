@@ -1,0 +1,74 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pago.spec.js >> validando pasarela de pagos >> compra de un producto
+- Location: tests\pago.spec.js:16:9
+
+# Error details
+
+```
+Error: locator.fill: Target page, context or browser has been closed
+Call log:
+  - waiting for getByRole('textbox', { name: 'Calle, número, ciudad' })
+
+```
+
+# Test source
+
+```ts
+  1  | 
+  2  | class PayPage {
+  3  |     constructor(page) {
+  4  |         this.url = '/carrito';
+  5  |         this.page=page;
+  6  |         this.agregarProducto = page.locator('button').filter({ hasText: 'Añadir al carrito' }).first();
+  7  |         this.btnCarrito =  page.getByText('shopping_cart', { exact: true });
+  8  |         this.btnPago= page.getByRole('button', { name: 'Proceder al pago' });
+  9  |         this.direccion= page.getByRole('textbox', { name: 'Calle, número, ciudad' });
+  10 |         this.numeroTarjeta=  page.locator('div.p-4.rounded-lg.border.border-outline-variant.bg-surface.focus-within\:ring-2.focus-within\:ring-primary.transition-all')
+  11 |         this.btnConfirmarPago= page.locator("//button[@type='submit']");
+  12 |     }
+  13 | 
+  14 |     async agregarAlCarro() {
+  15 |         await this.agregarProducto.click()
+  16 |     }
+  17 | 
+  18 |     async clicarCarrito () {
+  19 |         await this.btnCarrito.click()
+  20 |     }
+  21 | 
+  22 |     async clicarBtnPago() {
+  23 |         await this.btnPago.click()
+  24 |     }
+  25 | 
+  26 |     async llenarDireccion(value){
+> 27 |         await this.direccion.fill(value)
+     |                              ^ Error: locator.fill: Target page, context or browser has been closed
+  28 |     }
+  29 |     async llenarNumTarjeta(value){
+  30 |         await this.numeroTarjeta.fill(value)
+  31 |     }
+  32 |     async clicarConfirmarPago(){
+  33 |         await this.btnConfirmarPago.click()
+  34 |     }
+  35 | 
+  36 | 
+  37 |     async pago(direccion,numeroTarjeta){
+  38 |         await this.page.goto('https://creative-choux-407b2c.netlify.app/')
+  39 |         await this.agregarAlCarro()
+  40 |         await this.clicarCarrito()
+  41 |         await this.clicarBtnPago()
+  42 |         await this.llenarDireccion(direccion)
+  43 |         await this.llenarNumTarjeta(numeroTarjeta)
+  44 |         await this.clicarConfirmarPago()
+  45 |         
+  46 |     }
+  47 | }
+  48 | 
+  49 | export default PayPage;  
+```

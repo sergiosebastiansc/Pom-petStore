@@ -1,0 +1,61 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pago.spec.js >> validando pasarela de pagos >> compra con numero de tarjeta inválido
+- Location: tests\pago.spec.js:20:9
+
+# Error details
+
+```
+ReferenceError: loginPage is not defined
+```
+
+# Test source
+
+```ts
+  1  | import {test,expect} from "@playwright/test";
+  2  | import LoginPage from "../pages/LoginPage";
+  3  | import PayPage from "../pages/PayPage";
+  4  | import { beforeEach } from "node:test";
+  5  | 
+  6  | let payPage;
+  7  | test.describe('validando pasarela de pagos', () => {
+  8  | 
+  9  |     test.beforeEach(async ({ page }) => {
+  10 |         
+  11 |         payPage = new PayPage(page);
+  12 |     })
+  13 | 
+  14 |     test('compra de un producto', async ({ page }) => {
+  15 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  16 |         await payPage.pago ('santiago123','4242424242424242 0827123123456')
+  17 |         await expect ( page.getByRole('heading', { name: '¡Pago exitoso!' })).toBeVisible();
+  18 |     });
+  19 | 
+  20 |     test('compra con numero de tarjeta inválido', async ({ page }) => {
+> 21 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+     |         ^ ReferenceError: loginPage is not defined
+  22 |         await payPage.pago ('santiago123','000011112222333 0827123123456')
+  23 |         await expect ( await page.getByText('El número de tarjeta no es válido.', { exact: true })).toBeVisible();
+  24 |     });
+  25 |      test('compra con numero de tarjeta bloqueada', async ({ page }) => {
+  26 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  27 |         await payPage.pago ('santiago123','4000000000000002 0827123123456')
+  28 |         await expect ( page.getByText('Tu tarjeta ha sido rechazada.', { exact: true })).toBeVisible();
+  29 |     });
+  30 | 
+  31 |     test('compra sin numero de tarjeta', async ({ page }) => {
+  32 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  33 |         await payPage.pago ('santiago123','')
+  34 |         await expect (page.getByText('El número de tarjeta está incompleto.', { exact: true }) ).toBeVisible();
+  35 |     });
+  36 | 
+  37 |      
+  38 |     
+  39 | })  
+```

@@ -1,0 +1,72 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pago.spec.js >> validando pasarela de pagos >> compra de un producto
+- Location: tests\pago.spec.js:16:9
+
+# Error details
+
+```
+TypeError: page.frameLocator(...).contentFrame is not a function
+```
+
+# Test source
+
+```ts
+  1  | 
+  2  | class PayPage {
+  3  |     constructor(page) {
+  4  |         this.url = '/carrito';
+  5  |         this.page=page;
+  6  |         this.agregarProducto = page.locator('button').filter({ hasText: 'Añadir al carrito' }).first();
+  7  |         this.btnCarrito =  page.getByText('shopping_cart', { exact: true });
+  8  |         this.btnPago= page.getByRole('button', { name: 'Proceder al pago' });
+  9  |         this.direccion= page.getByRole('textbox', { name: 'Calle, número, ciudad' });
+> 10 |         const iframeElement= page.frameLocator('#__privateStripeFrame1473').contentFrame();
+     |                                                                             ^ TypeError: page.frameLocator(...).contentFrame is not a function
+  11 |         this.numeroTarjeta=  iframeElement.getByRole('textbox', { name: 'Credit or debit card number' })
+  12 |         this.btnConfirmarPago= page.locator("//button[@type='submit']");
+  13 |     }
+  14 | 
+  15 |     async agregarAlCarro() {
+  16 |         await this.agregarProducto.click()
+  17 |     }
+  18 | 
+  19 |     async clicarCarrito () {
+  20 |         await this.btnCarrito.click()
+  21 |     }
+  22 | 
+  23 |     async clicarBtnPago() {
+  24 |         await this.btnPago.click()
+  25 |     }
+  26 | 
+  27 |     async llenarDireccion(value){
+  28 |         await this.direccion.fill(value)
+  29 |     }
+  30 |     async llenarNumTarjeta(value){
+  31 |         await this.numeroTarjeta.fill(value)
+  32 |     }
+  33 |     async clicarConfirmarPago(){
+  34 |         await this.btnConfirmarPago.click()
+  35 |     }
+  36 | 
+  37 | 
+  38 |     async pago(direccion,numeroTarjeta){
+  39 |         await this.page.goto('https://creative-choux-407b2c.netlify.app/')
+  40 |         await this.agregarAlCarro()
+  41 |         await this.clicarCarrito()
+  42 |         await this.clicarBtnPago()
+  43 |         await this.llenarDireccion(direccion)
+  44 |         await this.llenarNumTarjeta(numeroTarjeta)
+  45 |         await this.clicarConfirmarPago()
+  46 |         
+  47 |     }
+  48 | }
+  49 | 
+  50 | export default PayPage;  
+```
