@@ -1,0 +1,231 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pago.spec.js >> validando pasarela de pagos >> compra de un producto
+- Location: tests\pago.spec.js:16:9
+
+# Error details
+
+```
+ReferenceError: numeroCaducidad is not defined
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=f4e3]:
+  - banner [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - link "pets Pet Store" [ref=f4e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e7]: pets
+        - generic [ref=f4e9]: Pet Store
+      - navigation [ref=f4e10]:
+        - link "Inicio" [ref=f4e11] [cursor=pointer]:
+          - /url: /
+        - link "Productos" [ref=f4e12] [cursor=pointer]:
+          - /url: /catalogo
+        - link "Perros" [ref=f4e13] [cursor=pointer]:
+          - /url: /catalogo?cat=Perros
+        - link "Gatos" [ref=f4e14] [cursor=pointer]:
+          - /url: /catalogo?cat=Gatos
+      - generic [ref=f4e15]:
+        - link "shopping_cart 1" [ref=f4e16] [cursor=pointer]:
+          - /url: /carrito
+          - generic [ref=f4e17]: shopping_cart
+          - generic [ref=f4e18]: "1"
+        - link "account_circle" [ref=f4e19] [cursor=pointer]:
+          - /url: /perfil
+        - button "Salir" [ref=f4e21] [cursor=pointer]
+  - main [ref=f4e22]:
+    - generic [ref=f4e23]:
+      - heading "Checkout" [level=1] [ref=f4e24]
+      - generic [ref=f4e25]:
+        - generic [ref=f4e26]:
+          - heading "credit_card Información de pago" [level=2] [ref=f4e27]:
+            - generic [ref=f4e28]: credit_card
+            - text: Información de pago
+          - generic [ref=f4e29]:
+            - generic [ref=f4e30]:
+              - heading "Resumen del pedido" [level=3] [ref=f4e31]
+              - generic [ref=f4e32]:
+                - generic [ref=f4e33]: arnes gato x1
+                - generic [ref=f4e34]: $15.000
+              - generic [ref=f4e35]:
+                - generic [ref=f4e36]:
+                  - generic [ref=f4e37]: Subtotal
+                  - generic [ref=f4e38]: $15.000
+                - generic [ref=f4e39]:
+                  - generic [ref=f4e40]: Envío
+                  - generic [ref=f4e41]: $3.990
+                - generic [ref=f4e42]:
+                  - generic [ref=f4e43]: Total a pagar
+                  - generic [ref=f4e44]: $18.990
+            - generic [ref=f4e45]:
+              - generic [ref=f4e46]: Código de descuento
+              - generic [ref=f4e48]:
+                - textbox "Ingresa tu código aquí" [ref=f4e49]
+                - button "local_offer Aplicar" [disabled] [ref=f4e50]:
+                  - generic [ref=f4e51]: local_offer
+                  - text: Aplicar
+            - generic [ref=f4e52]:
+              - generic [ref=f4e53]: Dirección de envío
+              - generic [ref=f4e54]:
+                - generic [ref=f4e55]: home
+                - textbox "Calle, número, ciudad" [ref=f4e56]: santiago123
+            - generic [ref=f4e57]:
+              - generic [ref=f4e58]: Datos de tarjeta
+              - generic [ref=f4e61]:
+                - iframe [active] [ref=f4e62]:
+                  - generic [ref=f8e1]:
+                    - generic: 0123456789０１２３４５６７８９
+                    - textbox
+                    - generic [ref=f8e2]:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: Current card brand is Visa.
+                            - generic:
+                              - img "CVC"
+                      - generic [ref=f8e3]:
+                        - generic [ref=f8e4]:
+                          - generic:
+                            - generic: "4242"
+                            - text: 4242 4242 4242 4242
+                          - generic [ref=f8e6]:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic: Current card brand is Visa.
+                                  - generic:
+                                    - img "CVC"
+                            - textbox "Credit or debit card number" [ref=f8e9]:
+                              - /placeholder: Card number
+                              - text: 4242 4242 4242 4242
+                        - generic [ref=f8e10]:
+                          - textbox "Credit or debit card expiration date" [active] [ref=f8e14]:
+                            - /placeholder: MM / YY
+                          - textbox "Credit or debit card CVC/CVV" [ref=f8e18]:
+                            - /placeholder: CVC
+                          - textbox "ZIP" [ref=f8e22]
+                    - textbox
+                    - button
+                - textbox
+                - iframe [ref=f4e64]:
+                  - generic [ref=f11e1]:
+                    - generic:
+                      - button:
+                        - generic: Autofill
+              - generic [ref=f4e65]:
+                - paragraph [ref=f4e66]: "Tarjetas de prueba Stripe:"
+                - paragraph [ref=f4e67]: "✅ Exitoso: 4242 4242 4242 4242"
+                - paragraph [ref=f4e68]: "❌ Fallido: 4000 0000 0000 0002"
+                - paragraph [ref=f4e69]: "Fecha: cualquier futura · CVC: cualquier 3 dígitos"
+            - button "lock Pagar $18.990" [ref=f4e70] [cursor=pointer]:
+              - generic [ref=f4e71]: lock
+              - text: Pagar $18.990
+            - paragraph [ref=f4e72]:
+              - generic [ref=f4e73]: security
+              - text: Pago seguro procesado por Stripe
+        - generic [ref=f4e74]:
+          - heading "Productos (1)" [level=2] [ref=f4e75]
+          - generic [ref=f4e76]:
+            - img "arnes gato" [ref=f4e78]
+            - generic [ref=f4e79]:
+              - paragraph [ref=f4e80]: arnes gato
+              - paragraph [ref=f4e81]: "Cantidad: 1"
+            - generic [ref=f4e82]: $15.000
+  - contentinfo [ref=f4e83]:
+    - generic [ref=f4e84]:
+      - generic [ref=f4e85]: pets
+      - generic [ref=f4e87]: Pet Store
+    - generic [ref=f4e88]:
+      - link "Privacidad" [ref=f4e89] [cursor=pointer]:
+        - /url: /privacidad
+      - link "Términos" [ref=f4e90] [cursor=pointer]:
+        - /url: /terminos
+      - link "Contacto" [ref=f4e91] [cursor=pointer]:
+        - /url: /contacto
+      - link "Preguntas Frecuentes" [ref=f4e92] [cursor=pointer]:
+        - /url: /faq
+    - generic [ref=f4e93]: © 2026 Pet Store
+```
+
+# Test source
+
+```ts
+  1  | 
+  2  | class PayPage {
+  3  |     constructor(page) {
+  4  |         this.url = '/carrito';
+  5  |         this.page=page;
+  6  |         this.agregarProducto = page.locator('button').filter({ hasText: 'Añadir al carrito' }).first();
+  7  |         this.btnCarrito =  page.getByText('shopping_cart', { exact: true });
+  8  |         this.btnPago= page.getByRole('button', { name: 'Proceder al pago' });
+  9  |         this.direccion= page.getByRole('textbox', { name: 'Calle, número, ciudad' });
+  10 |         const iframeElement= page.frameLocator('iframe[title="Secure card payment input frame"]');
+  11 |         
+  12 |         this.numeroTarjeta=  iframeElement.locator('input[name="cardnumber"]');
+  13 |         this.numeroCaducidad= iframeElement.locator('input[name="exp-date"]')
+  14 |         this.numeroCVV=iframeElement.locator('input[name="cvc"]');
+  15 |         this.numeroCP=iframeElement.locator('input[name="postal"]');
+  16 |         this.btnConfirmarPago= page.locator("//button[@type='submit']");
+  17 |     }
+  18 | 
+  19 |     async agregarAlCarro() {
+  20 |         await this.agregarProducto.click()
+  21 |     }
+  22 | 
+  23 |     
+  24 |     async clicarCarrito () {
+  25 |         await this.btnCarrito.click()
+  26 |     }
+  27 | 
+  28 |     async clicarBtnPago() {
+  29 |         await this.btnPago.click()
+  30 |     }
+  31 | 
+  32 |     async llenarDireccion(value){
+  33 |         await this.direccion.fill(value)
+  34 |     }
+  35 |     async llenarNumTarjeta(value){
+  36 |         
+  37 |          await this.numeroTarjeta.fill(value)
+  38 |     }
+  39 |     async llenarNumeroCaducidad(value) {
+  40 |         await this.numeroCaducidad.fill(value)
+  41 |     }
+  42 |     async llenarNumeroCVV(value){
+  43 |         await this.numeroCVV.fill(value)
+  44 |     }
+  45 |     async llenarNumeroCP(value){
+  46 |         await this.numeroCP.fill(value)
+  47 |     }
+  48 |     async clicarConfirmarPago(){
+  49 |         await this.btnConfirmarPago.click()
+  50 |     }
+  51 | 
+  52 | 
+  53 |     async pago(direccion,numeroTarjeta){
+  54 |         await this.page.goto('https://creative-choux-407b2c.netlify.app/')
+  55 |         await this.agregarAlCarro()
+  56 |         await this.clicarCarrito()
+  57 |         await this.clicarBtnPago()
+  58 |         await this.llenarDireccion(direccion)
+  59 |         await this.llenarNumTarjeta(numeroTarjeta)
+> 60 |         await this.llenarNumeroCaducidad(numeroCaducidad)
+     |                                          ^ ReferenceError: numeroCaducidad is not defined
+  61 |         await this.llenarNumeroCVV(numeroCVV)
+  62 |         await this.llenarNumeroCP(numeroCP)
+  63 |         await this.clicarConfirmarPago()
+  64 |         
+  65 |     }
+  66 | }
+  67 | 
+  68 | export default PayPage;  
+```

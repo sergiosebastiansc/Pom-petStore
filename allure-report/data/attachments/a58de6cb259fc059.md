@@ -1,0 +1,156 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pago.spec.js >> validando pasarela de pagos >> compra con numero de tarjeta inválido
+- Location: tests\pago.spec.js:31:9
+
+# Error details
+
+```
+Error: expect(locator).toBeVisible() failed
+
+Locator: getByText('El número de tarjeta no es válido.', { exact: true })
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" with timeout 5000ms
+  - waiting for getByText('El número de tarjeta no es válido.', { exact: true })
+
+```
+
+```yaml
+- banner:
+  - link "pets Pet Store":
+    - /url: /
+  - navigation:
+    - link "Inicio":
+      - /url: /
+    - link "Productos":
+      - /url: /catalogo
+    - link "Perros":
+      - /url: /catalogo?cat=Perros
+    - link "Gatos":
+      - /url: /catalogo?cat=Gatos
+  - link "shopping_cart 1":
+    - /url: /carrito
+  - link "account_circle":
+    - /url: /perfil
+  - button "Salir"
+- main:
+  - heading "Checkout" [level=1]
+  - heading "credit_card Información de pago" [level=2]
+  - heading "Resumen del pedido" [level=3]
+  - text: arnes gato x1 $15.000 Subtotal $15.000 Envío $3.990 Total a pagar $18.990 Código de descuento
+  - textbox "Ingresa tu código aquí"
+  - button "local_offer Aplicar" [disabled]
+  - text: Dirección de envío home
+  - textbox "Calle, número, ciudad": santiago123
+  - text: Datos de tarjeta
+  - iframe
+  - text: error
+  - paragraph: Your card number is invalid.
+  - paragraph: "Tarjetas de prueba Stripe:"
+  - paragraph: "✅ Exitoso: 4242 4242 4242 4242"
+  - paragraph: "❌ Fallido: 4000 0000 0000 0002"
+  - paragraph: "Fecha: cualquier futura · CVC: cualquier 3 dígitos"
+  - button "lock Pagar $18.990"
+  - paragraph: security Pago seguro procesado por Stripe
+  - heading "Productos (1)" [level=2]
+  - img "arnes gato"
+  - paragraph: arnes gato
+  - paragraph: "Cantidad: 1"
+  - text: $15.000
+- contentinfo:
+  - text: pets Pet Store
+  - link "Privacidad":
+    - /url: /privacidad
+  - link "Términos":
+    - /url: /terminos
+  - link "Contacto":
+    - /url: /contacto
+  - link "Preguntas Frecuentes":
+    - /url: /faq
+  - text: © 2026 Pet Store
+```
+
+# Test source
+
+```ts
+  1  | import {test,expect} from "@playwright/test";
+  2  | import {allure} from 'allure-playwright';
+  3  | import LoginPage from "../pages/LoginPage";
+  4  | import PayPage from "../pages/PayPage";
+  5  | import { beforeEach } from "node:test";
+  6  | 
+  7  | 
+  8  | let loginPage;
+  9  | let payPage;
+  10 | test.describe('validando pasarela de pagos', () => {
+  11 | 
+  12 |     test.beforeEach(async ({ page }) => {
+  13 |         
+  14 |         payPage = new PayPage(page);
+  15 |         loginPage= new LoginPage(page)
+  16 |     })
+  17 | 
+  18 |     test('compra de un producto', async ({ page }) => {
+  19 |         allure.epic('flujo de compra');
+  20 |         await allure.step('paso 1: checkout de credenciales', async () => {    
+  21 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  22 |         })
+  23 | 
+  24 |         await allure.step('paso 2: compra de producto', async () => {
+  25 |         await payPage.pago ('santiago123','4242 4242 4242 4242','04/29','123','12345')
+  26 | 
+  27 |         await expect ( page.getByRole('heading', { name: '¡Pago exitoso!' })).toBeVisible();
+  28 |         });
+  29 |     })
+  30 | 
+  31 |     test('compra con numero de tarjeta inválido', async ({ page }) => {
+  32 |          allure.epic('flujo de compra');
+  33 |         await allure.step('paso 1: checkout de credenciales', async () => {    
+  34 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  35 |         });
+  36 | 
+  37 |          await allure.step('paso 2: compra de producto', async () => {
+  38 |         await payPage.pago ('santiago123','0000 1111 2222 3333','04/29','123','12345')
+  39 | 
+> 40 |         await expect ( await page.getByText('El número de tarjeta no es válido.', { exact: true })).toBeVisible();
+     |                                                                                                     ^ Error: expect(locator).toBeVisible() failed
+  41 |         });
+  42 |     });
+  43 |      test('compra con numero de tarjeta bloqueada', async ({ page }) => {
+  44 |         allure.epic('flujo de compra');
+  45 |         await allure.step('paso 1: checkout de credenciales', async () => { 
+  46 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  47 |         })
+  48 | 
+  49 |         await allure.step('paso 2: compra de producto', async () => {
+  50 |         await payPage.pago ('santiago123','4000 0000 0000 0002','04/29','123','12345')
+  51 |         await expect ( page.getByText('Your card has been declined.', { exact: true })).toBeVisible();
+  52 |     });
+  53 | });
+  54 | 
+  55 |     test('compra sin numero de tarjeta', async ({ page }) => {
+  56 |         allure.epic('flujo de compra');
+  57 |         await allure.step('paso 1: checkout de credenciales', async () => { 
+  58 |         await loginPage.login ('sergiosebastiansc@gmail.com','clave1234')
+  59 |     });
+  60 | 
+  61 |     await allure.step('paso 2: compra de producto', async () => {
+  62 |         await payPage.pago ('santiago123','','04/29','123','')
+  63 |         await expect (page.getByText('Your card number is incomplete.', { exact: true }) ).toBeVisible();
+  64 |     });
+  65 | });
+  66 | 
+  67 |      
+  68 |     
+  69 | });  
+```

@@ -1,4 +1,5 @@
 import {test,expect} from "@playwright/test";
+import {allure} from 'allure-playwright';
 import LoginPage from "../pages/LoginPage";
 import { beforeEach } from "node:test";
 
