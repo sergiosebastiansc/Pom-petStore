@@ -12,25 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Carga el código
+      - name: "Carga el código"
       - uses: actions/checkout@v7
 
-      - name: Prepara el ambiente
+      - name: "Prepara el ambiente"
       - uses: actions/setup-node@v7
         with:
           node-version: 20
           cache: npm
 
-      - name: Instalar dependencias
+      - name: "Instalar dependencias"
         run: npm ci
 
-      - name: Instalar playwright
+      - name: "Instalar playwright"
         run: npx playwright install --with-deps chromium
 
-      - name: Ejecutar playwright
+      - name: "Ejecutar playwright"
         run: npx playwright test
 
-      - name: Sube el reporte
+      - name: "Sube el reporte"
         if: always()
         uses: actions/upload-artifact@v7
         with:
